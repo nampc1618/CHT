@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Weight name="ed_" protocol="RS232">
+	<PortName>COM3</PortName>
+	<BaudRate>9600</BaudRate>
+</Weight>
