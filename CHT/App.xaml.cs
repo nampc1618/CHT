@@ -26,10 +26,13 @@ namespace CHT
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             MainView mainView = new MainView();
+           
             Rs232 rs232 = new Rs232(mainView.Dispatcher);
             WeighViewModel weighViewModel = new WeighViewModel(mainView.Dispatcher, rs232);
+            PrinterViewModel printerViewModel = new PrinterViewModel(mainView.Dispatcher);
+            SettingsViewModel settingsViewModel = new SettingsViewModel(mainView.Dispatcher, weighViewModel, printerViewModel);
 
-            MainViewModel mainViewModel = new MainViewModel(mainView.Dispatcher, mainView, weighViewModel);
+            MainViewModel mainViewModel = new MainViewModel(mainView.Dispatcher, mainView, weighViewModel, settingsViewModel, printerViewModel);
             mainView.DataContext = mainViewModel;
 
             mainView.Show();

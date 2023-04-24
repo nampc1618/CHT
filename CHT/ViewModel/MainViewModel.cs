@@ -12,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Kis.Toolkit;
+using System.Windows.Controls;
+using System.Windows;
 
 namespace CHT.ViewModel
 {
@@ -35,8 +37,11 @@ namespace CHT.ViewModel
         
         #region ViewModels
         public WeighViewModel WeighViewModel { get; private set; }
+        public PrinterViewModel PrinterViewModel { get; private set; }
+        public SettingsViewModel SettingsViewModel { get; private set; }
         #endregion
-        public MainViewModel(Dispatcher dispatcher, MainView mainView, WeighViewModel weighViewModel) 
+        public MainViewModel(Dispatcher dispatcher, MainView mainView, WeighViewModel weighViewModel, SettingsViewModel settingsViewModel,
+                            PrinterViewModel printerViewModel) 
         {
             if (Instance is null)
             {
@@ -47,9 +52,12 @@ namespace CHT.ViewModel
             _dispatcher = dispatcher;
             MainView = mainView;
             WeighViewModel = weighViewModel;
+            SettingsViewModel = settingsViewModel;
+            PrinterViewModel = printerViewModel;
          
             this.OpenCOM = new OpenCOMCmd(this);
             this.PressEnterKey = new PressEnterKeyCmd(this);
+            this.OpenSettingsView = new OpenSettingsViewCmd(this);
         }
         public void WirteTest(Paragraph para, string text)
         {
@@ -65,6 +73,11 @@ namespace CHT.ViewModel
                 MainView.tbWeigh.Text = data;
             }));
         }
+        public void ShowView(Window wd)
+        {
+            wd.ShowDialog();
+        }
+       
         private double _opacityMain = 1.0;
         public double OpacityMain
         {
@@ -78,5 +91,6 @@ namespace CHT.ViewModel
         public ICommand OpenCOM { get; }
         public ICommand CloseCOM { get; }
         public ICommand PressEnterKey { get; }
+        public ICommand OpenSettingsView { get; }
     }
 }

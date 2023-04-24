@@ -27,7 +27,7 @@ namespace CHT.View
         {
             InitializeComponent();
 
-            _time = TimeSpan.FromSeconds(3);
+            _time = TimeSpan.FromSeconds(Convert.ToInt32(MainViewModel.Instance.WeighViewModel.Rs232.WeightModel.Delay));
 
             _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
             {

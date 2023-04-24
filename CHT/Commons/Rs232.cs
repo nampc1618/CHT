@@ -1,5 +1,8 @@
-﻿using CHT.Model;
+﻿#define NO_TEST
+
+using CHT.Model;
 using CHT.ViewModel;
+using Kis.Toolkit;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -7,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace CHT.Commons
@@ -14,14 +18,34 @@ namespace CHT.Commons
     public class Rs232 : BaseModel
     {
         private readonly Dispatcher _dispatcher;
-        public Rs232(Dispatcher dispatcher) 
-        { 
+        public WeightModel WeightModel { get; private set; }
+        
+        XmlManagement xmlManagement;
+        public Rs232(Dispatcher dispatcher)
+        {
             _dispatcher = dispatcher;
-            PortList = SerialPort.GetPortNames();
-            PortSelected = PortList[2];
-            Baud_Rate = 9600;
+            _portList = SerialPort.GetPortNames().ToList();
+            _baudRateList = new List<string>()
+            {
+                "4800",
+                "9600",
+                "19200",
+                "38400"
+            };
+            WeightModel = new WeightModel();
+
+            xmlManagement = new XmlManagement();
+            xmlManagement.Load(XmlPath.WeighXmlPath);
+            PortSelected = xmlManagement.SelectSingleNode("//PortName").InnerText;
+            BaudRateSelected = xmlManagement.SelectSingleNode("//BaudRate").InnerText;
+            Init();
+#if !NO_TEST
+            _portList = SerialPort.GetPortNames().ToList();
+            PortSelected = _portList[2];
+            _baudRateSelected = 9600;
 
             Init();
+#endif
         }
         private SerialPort _rs232COM;
         public SerialPort Rs232COM
@@ -36,7 +60,24 @@ namespace CHT.Commons
             }
         }
 
-        public string[] PortList;
+        private List<string> _portList;
+        public List<string> PortList
+        {
+            get { return _portList; }
+            set
+            {
+                SetProperty(ref _portList, value);
+            }
+        }
+        private List<string> _baudRateList;
+        public List<string> BaudRateList
+        {
+            get { return _baudRateList; }
+            set
+            {
+                SetProperty(ref _baudRateList, value);
+            }
+        }
         private string _portSelected;
         public string PortSelected
         {
@@ -49,7 +90,15 @@ namespace CHT.Commons
                 SetProperty(ref _portSelected, value);
             }
         }
-        public int Baud_Rate { get; set; }
+        private string _baudRateSelected;
+        public string BaudRateSelected
+        {
+            get { return _baudRateSelected; }
+            set
+            {
+                SetProperty(ref _baudRateSelected, value);
+            }
+        }
         private string _recieveData;
         public string RecieveData
         {
@@ -68,13 +117,22 @@ namespace CHT.Commons
                 SetProperty(ref dataForShow, value);
             }
         }
+        //private List<int> _baudRateList;
+        //public List<int> BaudRateList
+        //{
+        //    get { return _baudRateList; }
+        //    set
+        //    {
+        //        SetProperty(ref _baudRateList, value);
+        //    }
+        //}
         private void Init()
         {
             // Create a object COM
             _rs232COM = new SerialPort();
             _rs232COM.PortName = PortSelected;
             _rs232COM.ReadTimeout = 5000;
-            _rs232COM.BaudRate = Baud_Rate;
+            _rs232COM.BaudRate = Convert.ToInt32(BaudRateSelected);
             _rs232COM.DataBits = 8;
             _rs232COM.Parity = Parity.None;
             _rs232COM.StopBits = StopBits.One;
@@ -95,7 +153,7 @@ namespace CHT.Commons
                 RecieveData = _rs232COM.ReadExisting();
                 string s = RecieveData.Substring(RecieveData.IndexOf("0"), 5);
                 float f = 0.000f;
-                if (!float.TryParse(s, out f)) 
+                if (!float.TryParse(s, out f))
                     return;
                 if (f == 1.000f)
                 {
@@ -126,14 +184,30 @@ namespace CHT.Commons
         //}
         public bool OpenCOM()
         {
-            _rs232COM.Open();
-            return _rs232COM.IsOpen;
+            try
+            {
+                _rs232COM.Open();
+                return _rs232COM.IsOpen;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
         }
         public bool CloseCOM()
         {
-            _rs232COM.Close();
-            return _rs232COM.IsOpen;
+            try
+            {
+                _rs232COM.Close();
+                return _rs232COM.IsOpen;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
         }
-        
+
     }
 }

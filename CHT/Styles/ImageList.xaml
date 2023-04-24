@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BitmapImage x:Key="IMG_Refresh"
+                 UriSource="/CHT;component/Assets/Images/refresh-button.png" />
+    <BitmapImage x:Key="IMG_Setting"
+                 UriSource="/CHT;component/Assets/Images/setting.png" />
+    <BitmapImage x:Key="IMG_information"
+                 UriSource="/CHT;component/Assets/Images/information.png" />
+</ResourceDictionary>

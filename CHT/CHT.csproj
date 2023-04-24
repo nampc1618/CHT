@@ -67,12 +67,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\Cmd\SaveParamsCmd.cs" />
+    <Compile Include="Command\Cmd\OpenSettingsViewCmd.cs" />
     <Compile Include="Command\Cmd\PressEnterKeyCmd.cs" />
     <Compile Include="Command\Cmd\OpenCOMCmd.cs" />
     <Compile Include="Command\Cmd\RefreshCmd.cs" />
     <Compile Include="Command\CommandBase.cs" />
     <Compile Include="Command\RelayCommand.cs" />
+    <Compile Include="Commons\NClientSocket.cs" />
     <Compile Include="Commons\Rs232.cs" />
+    <Compile Include="Commons\XmlPath.cs" />
     <Compile Include="Conveters\EnumDescriptionConverter.cs" />
     <Compile Include="Conveters\IsCheckedReverseConverter.cs" />
     <Compile Include="Conveters\SearchValueConverter.cs" />
@@ -80,6 +84,7 @@
     <Compile Include="Model\WeightModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\PrinterViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\WeighViewModel.cs" />
     <Compile Include="View\CountdownView.xaml.cs">
@@ -88,11 +93,8 @@
     <Compile Include="View\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UcPrinterSetting.xaml.cs">
-      <DependentUpon>UcPrinterSetting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\UcWeighSetting.xaml.cs">
-      <DependentUpon>UcWeighSetting.xaml</DependentUpon>
+    <Compile Include="View\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -106,6 +108,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Styles\ImageList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Style.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -122,11 +128,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UcPrinterSetting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\UcWeighSetting.xaml">
+    <Page Include="View\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -158,9 +160,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\Images\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Assets\Files\CHTConfiguration.xml" />
     <Resource Include="Assets\Files\Printer.xml" />
@@ -173,6 +173,10 @@
     <Resource Include="Controls\readme.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\Images\information.png" />
+    <Resource Include="Assets\Images\refresh-button.png" />
+    <Resource Include="Assets\Images\setting.png" />
+    <Resource Include="Assets\Images\settings.png" />
     <Content Include="External\KisToolkit.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

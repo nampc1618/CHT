@@ -5,14 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CHT.View"
         mc:Ignorable="d"
-        Title="CountdownView" Height="250" Width="300" MaxHeight="250" MaxWidth="300"
+        Title="CountdownView" Height="270" Width="300" MaxHeight="270" MaxWidth="300"
         ResizeMode="NoResize"
         WindowStyle="None" Loaded="Window_Loaded">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <TextBlock Name="tbTime" 
                    FontSize="160"
                    FontWeight="SemiBold"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"/>
+        <TextBlock FontSize="16"
+                   FontWeight="SemiBold"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   Grid.Row="1"
+                   Text="Đang cân..."/>
     </Grid>
 </Window>
