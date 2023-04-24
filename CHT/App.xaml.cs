@@ -1,4 +1,5 @@
-﻿using CHT.View;
+﻿using CHT.Commons;
+using CHT.View;
 using CHT.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,10 @@ namespace CHT
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             MainView mainView = new MainView();
-            MainViewModel mainViewModel = new MainViewModel();
+            Rs232 rs232 = new Rs232(mainView.Dispatcher);
+            WeighViewModel weighViewModel = new WeighViewModel(mainView.Dispatcher, rs232);
+
+            MainViewModel mainViewModel = new MainViewModel(mainView.Dispatcher, mainView, weighViewModel);
             mainView.DataContext = mainViewModel;
 
             mainView.Show();

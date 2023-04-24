@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- The Border Brush is used as the color for most borders -->
+    <SolidColorBrush x:Key="BorderBrush" Color="#FFFFFFFF" />
+
+    <LinearGradientBrush x:Key="InputBackgroundBrush" EndPoint="0.504,0.351" StartPoint="0.504,-0.319">
+        <GradientStop Color="#FF333333" Offset="0.416" />
+        <GradientStop Color="#FF636F8B" Offset="0.54" />
+    </LinearGradientBrush>
+
+    <!-- The Background Brush is used as the background for the Headers and Footers-->
+    <SolidColorBrush x:Key="BackgroundBrush" Color="#FF323F56" />
+    
+    
+</ResourceDictionary>
