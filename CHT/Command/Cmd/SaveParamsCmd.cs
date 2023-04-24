@@ -28,31 +28,37 @@ namespace CHT.Command.Cmd
                 switch (para)
                 {
                     case "1":
-                        xmlManagement.Load(XmlPath.WeighXmlPath);
+                        xmlManagement.Load(CommonPaths.WeighXmlPath);
                         XmlNode nodePortName = xmlManagement.SelectSingleNode("//PortName");
                         XmlNode nodeBaud = xmlManagement.SelectSingleNode("//BaudRate");
                         XmlNode nodeDelay = xmlManagement.SelectSingleNode("//Delay");
                         xmlManagement.SetNodeValueFromNode(nodePortName, WeighViewModel.Instance.Rs232.PortSelected);
                         xmlManagement.SetNodeValueFromNode(nodeBaud, WeighViewModel.Instance.Rs232.BaudRateSelected);
                         xmlManagement.SetNodeValueFromNode(nodeDelay, WeighViewModel.Instance.Rs232.WeightModel.Delay);
-                        xmlManagement.SetAttributeValueFromXPath("//Weight", "//UnitId", WeighViewModel.Instance.Rs232.WeightModel.UnitId);
-                        if(xmlManagement.Save(XmlPath.WeighXmlPath))
+                        xmlManagement.SetAttributeValueFromXPath("//Weight", "UnitId", WeighViewModel.Instance.Rs232.WeightModel.UnitId);
+                        if(xmlManagement.Save(CommonPaths.WeighXmlPath))
                         {
                             MessageBox.Show("Đã lưu thông số cân!");
                         }
+                        SettingsViewModel.Instance.SettingsView.Close();
+                        SettingsViewModel.Instance.SettingsView = null;
+                        MainViewModel.Instance.RunScript(CommonPaths.ScriptlPath);
                         break;
                     case "2":
-                        xmlManagement.Load(XmlPath.PrinterXmlPath);
+                        xmlManagement.Load(CommonPaths.PrinterXmlPath);
                         XmlNode nodeIp = xmlManagement.SelectSingleNode("//Ip");
                         XmlNode nodePort = xmlManagement.SelectSingleNode("//Port");
                         XmlNode nodeField = xmlManagement.SelectSingleNode("//Field");
                         xmlManagement.SetNodeValueFromNode(nodeIp, PrinterViewModel.Instance.PrinterModel.IP);
                         xmlManagement.SetNodeValueFromNode(nodePort, PrinterViewModel.Instance.PrinterModel.Port);
                         xmlManagement.SetNodeValueFromNode(nodeField, PrinterViewModel.Instance.PrinterModel.FieldName);
-                        if (xmlManagement.Save(XmlPath.PrinterXmlPath))
+                        if (xmlManagement.Save(CommonPaths.PrinterXmlPath))
                         {
                             MessageBox.Show("Đã lưu thông số máy in!");
                         }
+                        SettingsViewModel.Instance.SettingsView.Close();
+                        SettingsViewModel.Instance.SettingsView = null;
+                        MainViewModel.Instance.RunScript(CommonPaths.ScriptlPath);
                         break;
                 }
             }

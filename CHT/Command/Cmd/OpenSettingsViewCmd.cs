@@ -19,7 +19,8 @@ namespace CHT.Command.Cmd
         {
             SettingsView settingsView = new SettingsView();
             settingsView.DataContext = _mainViewModel.SettingsViewModel;
-            settingsView.ShowDialog();
+            SettingsViewModel.Instance.SettingsView = settingsView;
+            SettingsViewModel.Instance.SettingsView.ShowDialog();
         }
     }
 }

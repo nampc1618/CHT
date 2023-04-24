@@ -76,7 +76,7 @@
     <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Commons\NClientSocket.cs" />
     <Compile Include="Commons\Rs232.cs" />
-    <Compile Include="Commons\XmlPath.cs" />
+    <Compile Include="Commons\CommonPaths.cs" />
     <Compile Include="Conveters\EnumDescriptionConverter.cs" />
     <Compile Include="Conveters\IsCheckedReverseConverter.cs" />
     <Compile Include="Conveters\SearchValueConverter.cs" />
@@ -152,6 +152,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Assets\Files\script.ps1" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -181,8 +182,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /y F:\Nampc\Src\CHT\CHT\Assets\Files\CHTConfiguration.xml F:\Nampc\Src\CHT\CHT\Output\Binaries\x64
-copy /y F:\Nampc\Src\CHT\CHT\Assets\Files\Printer.xml F:\Nampc\Src\CHT\CHT\Output\Binaries\x64
-copy /y F:\Nampc\Src\CHT\CHT\Assets\Files\Weight.xml F:\Nampc\Src\CHT\CHT\Output\Binaries\x64</PostBuildEvent>
+    <PostBuildEvent>copy /y E:\Nampc\Projects\CHT\CHT\Assets\Files\CHTConfiguration.xml E:\Nampc\Projects\CHT\CHT\Output\Binaries\x64
+copy /y E:\Nampc\Projects\CHT\CHT\Assets\Files\Printer.xml E:\Nampc\Projects\CHT\CHT\Output\Binaries\x64
+copy /y E:\Nampc\Projects\CHT\CHT\Assets\Files\Weight.xml E:\Nampc\Projects\CHT\CHT\Output\Binaries\x64
+copy /y E:\Nampc\Projects\CHT\CHT\Assets\Files\script.ps1 E:\Nampc\Projects\CHT\CHT\Output\Binaries\x64
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

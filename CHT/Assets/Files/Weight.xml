@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Weight name="ed_" protocol="RS232" UnitId="kg">
-	<PortName>COM3</PortName>
-	<BaudRate>9600</BaudRate>
-	<Delay>3</Delay>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Weight name="ed_" protocol="RS232" UnitId="g">
+  <PortName>COM6</PortName>
+  <BaudRate>9600</BaudRate>
+  <Delay>2</Delay>
 </Weight>

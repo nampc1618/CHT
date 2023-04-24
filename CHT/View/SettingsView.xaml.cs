@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CHT.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,11 @@ namespace CHT.View
         public SettingsView()
         {
             InitializeComponent();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+           
         }
     }
 }

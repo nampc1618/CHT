@@ -15,7 +15,7 @@ namespace CHT.Model
         public PrinterModel()
         {
             xmlManagement = new XmlManagement();
-            xmlManagement.Load(XmlPath.PrinterXmlPath);
+            xmlManagement.Load(CommonPaths.PrinterXmlPath);
 
             _ip = xmlManagement.SelectSingleNode("//Ip").InnerText;
             _port = xmlManagement.SelectSingleNode("//Port").InnerText;

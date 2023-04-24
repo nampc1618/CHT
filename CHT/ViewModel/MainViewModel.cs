@@ -14,6 +14,9 @@ using System.Windows.Threading;
 using Kis.Toolkit;
 using System.Windows.Controls;
 using System.Windows;
+using System.Diagnostics;
+using System.Reflection;
+
 
 namespace CHT.ViewModel
 {
@@ -77,7 +80,33 @@ namespace CHT.ViewModel
         {
             wd.ShowDialog();
         }
-       
+        public bool IsProcessOpen(string name)
+        {
+            Process[] pArry = Process.GetProcesses();
+            foreach (Process p in pArry)
+            {
+                string s = p.ProcessName;
+                s = s.ToLower();
+                if (s.CompareTo(name.ToLower()) == 0)
+                {
+                    p.Kill();
+                    return true;
+                }
+            }
+            return false;
+        }
+        private void StartProcess()
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = Assembly.GetExecutingAssembly().Location; //path/process name
+            Process.Start(startInfo);
+        }
+
+        public void RunScript(string path)
+        {
+            Process.Start(new ProcessStartInfo("Powershell.exe", path) { UseShellExecute = true });
+        }
+
         private double _opacityMain = 1.0;
         public double OpacityMain
         {

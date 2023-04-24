@@ -15,7 +15,7 @@ namespace CHT.ViewModel
     {
         private static Dispatcher _dispatcher;
         public static SettingsViewModel Instance { get; private set; }
-        //public SettingsView SettingsView { get; private set; }
+        public SettingsView SettingsView { get; set; }
         public WeighViewModel WeighViewModel { get; private set; }
         public PrinterViewModel PrinterViewModel { get; private set; }
         public SettingsViewModel(Dispatcher dispatcher, WeighViewModel weighViewModel, PrinterViewModel printerViewModel)

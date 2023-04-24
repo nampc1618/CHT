@@ -35,7 +35,7 @@ namespace CHT.Commons
             WeightModel = new WeightModel();
 
             xmlManagement = new XmlManagement();
-            xmlManagement.Load(XmlPath.WeighXmlPath);
+            xmlManagement.Load(CommonPaths.WeighXmlPath);
             PortSelected = xmlManagement.SelectSingleNode("//PortName").InnerText;
             BaudRateSelected = xmlManagement.SelectSingleNode("//BaudRate").InnerText;
             Init();
@@ -87,7 +87,10 @@ namespace CHT.Commons
             }
             set
             {
-                SetProperty(ref _portSelected, value);
+                if(SetProperty(ref _portSelected, value))
+                {
+                    
+                }
             }
         }
         private string _baudRateSelected;
@@ -159,29 +162,18 @@ namespace CHT.Commons
                 {
                     f = 0.000f;
                 }
-                DataForShow = (f * 1000).ToString("0.");
+                if (WeightModel.UnitId.Equals("g"))
+                {
+                    DataForShow = (f * 1000).ToString("0.");
+                }
+                else if(WeightModel.UnitId.Equals("kg"))
+                {
+                    DataForShow = f.ToString();
+                }
                 MainViewModel.Instance.ShowData(DataForShow);
-                await Task.Delay(1000);
+                await Task.Delay(300);
             });
         }
-
-        //private void DataReceived(object sender, SerialDataReceivedEventArgs e)
-        //{
-        //    this._dispatcher.BeginInvoke(new Action(() =>
-        //    {
-        //        RecieveData = _rs232COM.ReadLine();
-        //        string s = RecieveData.Substring(RecieveData.IndexOf("0"), 5);
-        //        float f = 0.0f;
-        //        float.TryParse(s, out f);
-        //        if(f == 1.0f)
-        //        {
-        //            f = 0.0f;
-        //        }
-        //        DataForShow = (f * 1000).ToString("0.000");
-        //        MainViewModel.Instance.ShowData(DataForShow);
-        //        Thread.Sleep(3000);
-        //    }));
-        //}
         public bool OpenCOM()
         {
             try

@@ -9,11 +9,12 @@ using System.Windows;
 
 namespace CHT.Commons
 {
-    public class XmlPath
+    public class CommonPaths
     {
         public static string WeighXmlPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Weight.xml");
         public static string CHTConfigurationXmlPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\CHTConfiguration.xml");
         public static string PrinterXmlPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Printer.xml");
+        public static string ScriptlPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\script.ps1");
 
     }
 }

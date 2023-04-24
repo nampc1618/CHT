@@ -8,7 +8,8 @@
         xmlns:vm="clr-namespace:CHT.ViewModel"
         d:DataContext="{d:DesignInstance vm:MainViewModel}"
         Title="SettingsView" Height="700" Width="500"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Closing="Window_Closing">
     <Border BorderBrush="{DynamicResource BorderBrush}"
             Background="{DynamicResource BackgroundBrush}"
             BorderThickness="1 1 1 1"

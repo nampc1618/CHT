@@ -7,10 +7,11 @@
         mc:Ignorable="d"
         Title="CountdownView" Height="270" Width="300" MaxHeight="270" MaxWidth="300"
         ResizeMode="NoResize"
-        WindowStyle="None" Loaded="Window_Loaded">
+        WindowStyle="None" 
+        Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="9*"/>
+            <RowDefinition Height="8*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Name="tbTime" 
@@ -18,11 +19,11 @@
                    FontWeight="SemiBold"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"/>
-        <TextBlock FontSize="16"
-                   FontWeight="SemiBold"
+        <TextBlock FontSize="20"
+                   FontWeight="Bold"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
                    Grid.Row="1"
-                   Text="Đang cân..."/>
+                   Text="ĐANG CÂN..."/>
     </Grid>
 </Window>
