@@ -176,4 +176,9 @@
     <Content Include="External\KisToolkit.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /y F:\Nampc\Src\CHT\CHT\Assets\Files\CHTConfiguration.xml F:\Nampc\Src\CHT\CHT\Output\Binaries\x64
+copy /y F:\Nampc\Src\CHT\CHT\Assets\Files\Printer.xml F:\Nampc\Src\CHT\CHT\Output\Binaries\x64
+copy /y F:\Nampc\Src\CHT\CHT\Assets\Files\Weight.xml F:\Nampc\Src\CHT\CHT\Output\Binaries\x64</PostBuildEvent>
+  </PropertyGroup>
 </Project>
