@@ -104,9 +104,10 @@ namespace CHT.Model
         {
             return (char)0x2 + _requestCode + (char)0x3;
         }
-        public string UpdateFieldCode()
+        public string UpdateFieldCode(string data)
         {
-            return (char)0x2 + _updateFieldCode + (char)0x3;
+            // Data send to: \u0002UTenTienich\n82\u0003
+            return (char)0x2 + _updateFieldCode + _fieldName + (char)0xA + data + (char)0x3;
         }
         #endregion
     }

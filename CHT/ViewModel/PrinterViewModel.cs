@@ -47,7 +47,7 @@ namespace CHT.ViewModel
             {
                 case NClientSocket.EConnectionEventClient.RECEIVEDATA:
                     string s = NClientSocket.ReceiveString;
-                    if (s.Equals("80"))
+                    if (!string.IsNullOrEmpty(s))
                     {
                         PrinterModel.MessageState = Commons.SysStates.EMessageState.UPDATE_FIELD_SUCCESS;
                         Logger.Info("Updated the field is success.");

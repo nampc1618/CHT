@@ -373,7 +373,7 @@ namespace Npc.NNetSocket
                 return;
             if (!ConnectToServer(this.IpAddress, this.Port))
                 return;
-            SendMsg("Hi,Server!");
+            //SendMsg("Hi,Server!");
             WaitForData();
             ConnectionEventCallback?.Invoke(EConnectionEventClient.CLIENTCONNECTED, true);
         }

@@ -31,7 +31,7 @@ namespace CHT.Commons
         }
         public enum EMessageState
         {
-            [Description("Đã cập nhật tiện ích")]
+            [Description("Đã cập nhật bản tin")]
             UPDATE_FIELD_SUCCESS,
             [Description("...")]
             NORMAL
