@@ -18,6 +18,7 @@ namespace CHT.ViewModel
         public SettingsView SettingsView { get; set; }
         public WeighViewModel WeighViewModel { get; private set; }
         public PrinterViewModel PrinterViewModel { get; private set; }
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public SettingsViewModel(Dispatcher dispatcher, WeighViewModel weighViewModel, PrinterViewModel printerViewModel)
         {
             if (Instance is null)

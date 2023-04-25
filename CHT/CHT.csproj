@@ -42,10 +42,21 @@
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Release\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>cht_ico.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="KisToolkit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>External\KisToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>External\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>External\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -77,9 +88,11 @@
     <Compile Include="Commons\NClientSocket.cs" />
     <Compile Include="Commons\Rs232.cs" />
     <Compile Include="Commons\CommonPaths.cs" />
-    <Compile Include="Conveters\EnumDescriptionConverter.cs" />
-    <Compile Include="Conveters\IsCheckedReverseConverter.cs" />
-    <Compile Include="Conveters\SearchValueConverter.cs" />
+    <Compile Include="Commons\SysStates.cs" />
+    <Compile Include="Converters\EnumDescriptionConverter.cs" />
+    <Compile Include="Converters\ForegroundConverter.cs" />
+    <Compile Include="Converters\IsCheckedReverseConverter.cs" />
+    <Compile Include="Converters\SearchValueConverter.cs" />
     <Compile Include="Model\PrinterModel.cs" />
     <Compile Include="Model\WeightModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -87,6 +100,9 @@
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\WeighViewModel.cs" />
+    <Compile Include="View\Abouts.xaml.cs">
+      <DependentUpon>Abouts.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\CountdownView.xaml.cs">
       <DependentUpon>CountdownView.xaml</DependentUpon>
     </Compile>
@@ -117,6 +133,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Abouts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -153,6 +173,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Assets\Files\script.ps1" />
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -174,18 +197,20 @@
     <Resource Include="Controls\readme.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="cht_ico.ico" />
+    <Content Include="External\log4net.dll" />
+    <Content Include="External\Microsoft.Xaml.Behaviors.dll" />
     <Resource Include="Assets\Images\information.png" />
     <Resource Include="Assets\Images\refresh-button.png" />
     <Resource Include="Assets\Images\setting.png" />
     <Resource Include="Assets\Images\settings.png" />
+    <Resource Include="Assets\Images\cht.jpg" />
+    <Resource Include="Assets\Images\logoNpc.jpg" />
     <Content Include="External\KisToolkit.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /y E:\Nampc\Projects\CHT\CHT\Assets\Files\CHTConfiguration.xml E:\Nampc\Projects\CHT\CHT\Output\Binaries\x64
-copy /y E:\Nampc\Projects\CHT\CHT\Assets\Files\Printer.xml E:\Nampc\Projects\CHT\CHT\Output\Binaries\x64
-copy /y E:\Nampc\Projects\CHT\CHT\Assets\Files\Weight.xml E:\Nampc\Projects\CHT\CHT\Output\Binaries\x64
-copy /y E:\Nampc\Projects\CHT\CHT\Assets\Files\script.ps1 E:\Nampc\Projects\CHT\CHT\Output\Binaries\x64
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

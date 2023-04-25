@@ -14,6 +14,7 @@ namespace CHT.Command.Cmd
     public class SaveParamsCmd : CommandBase
     {
         private readonly SettingsViewModel _settingsViewModel;
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         XmlManagement xmlManagement;
         public SaveParamsCmd(SettingsViewModel settingsViewModel)
         {
@@ -38,10 +39,12 @@ namespace CHT.Command.Cmd
                         xmlManagement.SetAttributeValueFromXPath("//Weight", "UnitId", WeighViewModel.Instance.Rs232.WeightModel.UnitId);
                         if(xmlManagement.Save(CommonPaths.WeighXmlPath))
                         {
+                            Logger.Info("Save the para for Weight success.");
                             MessageBox.Show("Đã lưu thông số cân!");
                         }
                         SettingsViewModel.Instance.SettingsView.Close();
                         SettingsViewModel.Instance.SettingsView = null;
+                        Logger.Info("Run the script for restart program. (after when save the para weight)");
                         MainViewModel.Instance.RunScript(CommonPaths.ScriptlPath);
                         break;
                     case "2":
@@ -54,10 +57,12 @@ namespace CHT.Command.Cmd
                         xmlManagement.SetNodeValueFromNode(nodeField, PrinterViewModel.Instance.PrinterModel.FieldName);
                         if (xmlManagement.Save(CommonPaths.PrinterXmlPath))
                         {
+                            Logger.Info("Save the para for Printer success.");
                             MessageBox.Show("Đã lưu thông số máy in!");
                         }
                         SettingsViewModel.Instance.SettingsView.Close();
                         SettingsViewModel.Instance.SettingsView = null;
+                        Logger.Info("Run the script for restart program. (after when save the para printer)");
                         MainViewModel.Instance.RunScript(CommonPaths.ScriptlPath);
                         break;
                 }

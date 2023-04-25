@@ -11,6 +11,7 @@ namespace CHT.Model
     public class WeightModel : BaseModel
     {
         XmlManagement xmlManagement;
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public WeightModel()
         {
             _unitIdList = new List<string>() { "g", "kg" };
@@ -18,6 +19,7 @@ namespace CHT.Model
             xmlManagement.Load(CommonPaths.WeighXmlPath);
             _unitId = xmlManagement.GetAttributeValueFromXPath("//Weight", "UnitId");
             _delay = xmlManagement.SelectSingleNode("//Delay").InnerText;
+            Logger.Info("Create WeightModel success.");
         }
         private string _unitId;
         public string UnitId

@@ -11,6 +11,7 @@ namespace Npc.NNetSocket
 {
     public class NClientSocket
     {
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         //Port: 1,024 to 65,535
         #region EnumConnectionEvent
         public enum EConnectionEventClient
@@ -36,6 +37,7 @@ namespace Npc.NNetSocket
             }
             this.IpAddress = ipaddress;
             this.Port = port;
+            Logger.Info("Initialize a NClientSocket object is success with IP and port");
         }
         #endregion
 
@@ -100,9 +102,11 @@ namespace Npc.NNetSocket
                 IPEndPoint remoteEP = new IPEndPoint(ipaddress2, this.Port);
                 this.m_clientSocket.Connect(remoteEP);
                 result = true;
+                Logger.InfoFormat("Connected to {0} is success, the port is {1}.", this.IpAddress, this.Port);
             }
             catch (Exception ex)
             {
+                Logger.Fatal(ex);
                 this.m_errorMsg = "Failed to occur when connecting, try again!\n" + ex.Message;
                 result = false;
                 ClientErrorEventCallback?.Invoke(m_errorMsg);
@@ -112,6 +116,7 @@ namespace Npc.NNetSocket
         private void Disconnect(bool reuseSocket = true)
         {
             this.m_clientSocket.Disconnect(reuseSocket);
+            Logger.InfoFormat("Disconnected to {0}.", this.IpAddress);
         }
         public bool Reconnect()
         {
@@ -326,6 +331,7 @@ namespace Npc.NNetSocket
             bool result;
             try
             {
+                Logger.InfoFormat("Start ping to IP: {0}", this.IpAddress);
                 Ping pinger = new Ping();
                 PingReply reply = pinger.Send(ip);
                 if (reply.Status == IPStatus.Success)
@@ -336,11 +342,13 @@ namespace Npc.NNetSocket
                 {
                     result = false;
                     m_errorMsg = "Cannot Ping to IP";
+                    Logger.Info("Cannot Ping to IP");
                     ClientErrorEventCallback?.Invoke(m_errorMsg);
                 }
             }
             catch (Exception ex)
             {
+                Logger.Fatal(ex);
                 this.m_errorMsg = ex.Message;
                 result = false;
                 ClientErrorEventCallback?.Invoke(m_errorMsg);

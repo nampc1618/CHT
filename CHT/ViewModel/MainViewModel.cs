@@ -37,7 +37,9 @@ namespace CHT.ViewModel
         //    }
         //}
         public static MainViewModel Instance { get; private set; }
-        
+
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         #region ViewModels
         public WeighViewModel WeighViewModel { get; private set; }
         public PrinterViewModel PrinterViewModel { get; private set; }
@@ -54,13 +56,18 @@ namespace CHT.ViewModel
                 return;
             _dispatcher = dispatcher;
             MainView = mainView;
+            Logger.Info("Start initialize all ViewModels");
             WeighViewModel = weighViewModel;
             SettingsViewModel = settingsViewModel;
             PrinterViewModel = printerViewModel;
-         
+            Logger.Info("Initialize all ViewModels is done.");
+
+            Logger.Info("Start initialize all Commands");
             this.OpenCOM = new OpenCOMCmd(this);
             this.PressEnterKey = new PressEnterKeyCmd(this);
             this.OpenSettingsView = new OpenSettingsViewCmd(this);
+            this.Refesh = new RefreshCmd(this);
+            Logger.Info("Initialize all Commands is done.");
         }
         public void WirteTest(Paragraph para, string text)
         {

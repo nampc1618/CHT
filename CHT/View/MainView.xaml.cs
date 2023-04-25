@@ -19,9 +19,21 @@ namespace CHT.View
     /// </summary>
     public partial class MainView : Window
     {
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public MainView()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Abouts abouts = new Abouts();
+            abouts.ShowDialog();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Logger.Info("The program is closing.");
         }
     }
 }

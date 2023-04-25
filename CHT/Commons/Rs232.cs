@@ -19,7 +19,8 @@ namespace CHT.Commons
     {
         private readonly Dispatcher _dispatcher;
         public WeightModel WeightModel { get; private set; }
-        
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         XmlManagement xmlManagement;
         public Rs232(Dispatcher dispatcher)
         {
@@ -87,9 +88,9 @@ namespace CHT.Commons
             }
             set
             {
-                if(SetProperty(ref _portSelected, value))
+                if (SetProperty(ref _portSelected, value))
                 {
-                    
+
                 }
             }
         }
@@ -120,6 +121,16 @@ namespace CHT.Commons
                 SetProperty(ref dataForShow, value);
             }
         }
+        private SysStates.EComState _comState = SysStates.EComState.NONE;
+        public SysStates.EComState ComState
+        {
+            get { return _comState; }
+            set
+            {
+                SetProperty(ref _comState, value);
+            }
+        }
+
         //private List<int> _baudRateList;
         //public List<int> BaudRateList
         //{
@@ -140,11 +151,13 @@ namespace CHT.Commons
             _rs232COM.Parity = Parity.None;
             _rs232COM.StopBits = StopBits.One;
             _rs232COM.DataReceived += new SerialDataReceivedEventHandler(_rs232COM_DataReceived);
+            Logger.Info("Create the rs232COM object is success.");
         }
         private async void _rs232COM_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             await this._dispatcher.BeginInvoke(new Action(async () =>
             {
+                _comState = SysStates.EComState.RECEIVING_DATA;
                 await DataReceived(sender, e);
             }));
         }
@@ -166,7 +179,7 @@ namespace CHT.Commons
                 {
                     DataForShow = (f * 1000).ToString("0.");
                 }
-                else if(WeightModel.UnitId.Equals("kg"))
+                else if (WeightModel.UnitId.Equals("kg"))
                 {
                     DataForShow = f.ToString();
                 }
@@ -179,10 +192,22 @@ namespace CHT.Commons
             try
             {
                 _rs232COM.Open();
+                if (_rs232COM.IsOpen)
+                {
+                    ComState = SysStates.EComState.OPENED;
+                    PrinterViewModel.Instance.PrinterModel.MessageState = Commons.SysStates.EMessageState.NORMAL;
+                    Logger.InfoFormat("Opened {0} port", PortSelected);
+                }
+                else
+                {
+                    ComState = SysStates.EComState.CLOSED;
+                    Logger.InfoFormat("Closed {0} port", PortSelected);
+                }
                 return _rs232COM.IsOpen;
             }
             catch (Exception ex)
             {
+                Logger.FatalFormat("Occur a exception with {0} port", PortSelected);
                 MessageBox.Show(ex.Message);
                 return false;
             }
@@ -192,10 +217,20 @@ namespace CHT.Commons
             try
             {
                 _rs232COM.Close();
+                if (_rs232COM.IsOpen)
+                {
+                    ComState = SysStates.EComState.OPENED;
+                }
+                else
+                {
+                    ComState = SysStates.EComState.CLOSED;
+                    Logger.InfoFormat("Closed {0} port", PortSelected);
+                }
                 return _rs232COM.IsOpen;
             }
             catch (Exception ex)
             {
+                Logger.FatalFormat("Occur a exception with {0} port", PortSelected);
                 MessageBox.Show(ex.Message);
                 return false;
             }

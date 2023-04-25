@@ -18,13 +18,14 @@ namespace CHT
     /// </summary>
     public partial class App : Application
     {
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
         }
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            Logger.Info("Start the program. Initialize MainView, Rs232, WeighViewModel, PrinterViewModel, SettingsViewModel, MainViewModel");
             MainView mainView = new MainView();
            
             Rs232 rs232 = new Rs232(mainView.Dispatcher);
@@ -36,6 +37,7 @@ namespace CHT
             mainView.DataContext = mainViewModel;
 
             mainView.Show();
+            Logger.Info("Create and start the program is success.");
         }
     }
 }

@@ -12,7 +12,7 @@ namespace CHT.ViewModel
     {
         private static Dispatcher _dispatcher;
         public static WeighViewModel Instance { get; private set; }
-
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public Rs232 Rs232 { get; private set; }
         public WeighViewModel(Dispatcher dispatcher, Rs232 rs232) 
         {

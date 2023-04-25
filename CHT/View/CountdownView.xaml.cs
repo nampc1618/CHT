@@ -23,6 +23,7 @@ namespace CHT.View
     {
         DispatcherTimer _timer;
         TimeSpan _time;
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public CountdownView()
         {
             InitializeComponent();
@@ -37,12 +38,15 @@ namespace CHT.View
                     _timer.Stop();
                     MainViewModel.Instance.OpacityMain = 1.0;
                     MainViewModel.Instance.WeighViewModel.Rs232.CloseCOM();
+                    PrinterViewModel.Instance.NClientSocket.SendMsg(PrinterViewModel.Instance.PrinterModel.UpdateFieldCode());
+                    Logger.Info("Countdown is done. Send data to the Printer");
                     this.Close();
                 }
                 _time = _time.Add(TimeSpan.FromSeconds(-1));
             }, Application.Current.Dispatcher);
 
             _timer.Start();
+            Logger.Info("Start delay time. Countdown");
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

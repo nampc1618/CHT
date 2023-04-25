@@ -6,4 +6,8 @@
                  UriSource="/CHT;component/Assets/Images/setting.png" />
     <BitmapImage x:Key="IMG_information"
                  UriSource="/CHT;component/Assets/Images/information.png" />
+    <BitmapImage x:Key="IMG_Npc"
+                 UriSource="/CHT;component/Assets/Images/logoNpc.jpg" />
+    <BitmapImage x:Key="IMG_Cht"
+                 UriSource="/CHT;component/Assets/Images/cht.jpg" />
 </ResourceDictionary>

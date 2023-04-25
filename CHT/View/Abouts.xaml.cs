@@ -1,5 +1,4 @@
-﻿using CHT.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,17 +15,13 @@ using System.Windows.Shapes;
 namespace CHT.View
 {
     /// <summary>
-    /// Interaction logic for SettingsView.xaml
+    /// Interaction logic for Abouts.xaml
     /// </summary>
-    public partial class SettingsView : Window
+    public partial class Abouts : Window
     {
-        public SettingsView()
+        public Abouts()
         {
             InitializeComponent();
-        }
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            SettingsViewModel.Instance.SettingsView = null;
         }
     }
 }

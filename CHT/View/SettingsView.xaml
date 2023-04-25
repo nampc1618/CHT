@@ -9,7 +9,7 @@
         d:DataContext="{d:DesignInstance vm:MainViewModel}"
         Title="SettingsView" Height="700" Width="500"
         ResizeMode="NoResize"
-        Closing="Window_Closing">
+        Closed="Window_Closed">
     <Border BorderBrush="{DynamicResource BorderBrush}"
             Background="{DynamicResource BackgroundBrush}"
             BorderThickness="1 1 1 1"
@@ -103,11 +103,11 @@
                             Margin="2">
                         <DockPanel LastChildFill="True">
                             <TextBlock Margin="10 3 3 3"
-                                   Text="Thời gian đợi"
+                                   Text="Thời gian đợi (s)"
                                    Foreground="White"
                                    FontSize="16"
                                    VerticalAlignment="Center"/>
-                            <TextBox Margin="170 5 0 5"
+                            <TextBox Margin="150 5 0 5"
                                      Width="100"
                                      FontSize="16"
                                      TextAlignment="Right"

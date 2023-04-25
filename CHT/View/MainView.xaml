@@ -7,16 +7,25 @@
         xmlns:local="clr-namespace:CHT.View"
         mc:Ignorable="d"
         xmlns:vm="clr-namespace:CHT.ViewModel"
+        xmlns:cvt="clr-namespace:CHT.Converters"
         d:DataContext="{d:DesignInstance vm:MainViewModel}"
         Title="MainView" Height="450" Width="800"
         WindowStartupLocation="CenterScreen"
-        WindowState="Maximized">
+        WindowState="Maximized"
+        Closing="Window_Closing">
     <Window.Resources>
-        
+        <cvt:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+        <cvt:ComStateToForegroundConverter x:Key="ComStateToForegroundConverter"/>
+        <cvt:PrinterStateToForegroundConverter x:Key="PrinterStateToForegroundConverter"/>
+        <cvt:MessageStateToForegroundConverter x:Key="MessageStateToForegroundConverter" />
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Key="Enter"
                     Command="{Binding PressEnterKey}"/>
+        <KeyBinding Key="F5"
+                    Command="{Binding Refesh}"/>
+        <KeyBinding Key="Esc"
+                    Command="{Binding OpenSettingsView}"/>
     </Window.InputBindings>
     <Grid Opacity="{Binding OpacityMain}">
         <Grid.RowDefinitions>
@@ -34,6 +43,11 @@
                         Height="30"
                         Margin="0 0 10 0"
                         Focusable="False">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding Refesh}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <Button.Template>
                         <ControlTemplate>
                             <Image Source="{DynamicResource IMG_Refresh}"
@@ -43,11 +57,15 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Command="{Binding OpenSettingsView}"
-                        Width="30"
+                <Button Width="30"
                         Height="30"
                         Margin="0 0 10 0"
                         Focusable="False">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding OpenSettingsView}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <Button.Template>
                         <ControlTemplate>
                             <Image Source="{DynamicResource IMG_Setting}"
@@ -60,7 +78,8 @@
                 <Button Width="30"
                         Height="30"
                         Margin="0 0 10 0"
-                        Focusable="False">
+                        Focusable="False"
+                        Click="Button_Click">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Source="{DynamicResource IMG_information}"
@@ -81,15 +100,15 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1.5*"/>
                     <RowDefinition Height="5*"/>
-                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1.5*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="TRỌNG LƯỢNG"
-                               Margin="0 20 0 0"
-                               FontSize="100"
-                               FontWeight="Bold"
-                               TextAlignment="Center"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"/>
+                           Margin="0 20 0 0"
+                           FontSize="100"
+                           FontWeight="Bold"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
                 <Grid Grid.Row="1">
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Top"
@@ -113,6 +132,15 @@
                                Text="{Binding WeighViewModel.Rs232.WeightModel.UnitId}"/>
                     </StackPanel>
                 </Grid>
+                <Grid Grid.Row="2">
+                    <TextBlock Margin="5"
+                               HorizontalAlignment="Center"
+                               FontSize="36"
+                               FontWeight="Bold"
+                               FontStyle="Italic"
+                               Foreground="Black"
+                               Text="Ấn ENTER để bắt đầu cân"/>
+                </Grid>
             </Grid>
         </Border>
         <Border Grid.Row="2" 
@@ -121,7 +149,40 @@
             <Grid Margin="0"
                   Height="auto"
                   Background="{DynamicResource InputBackgroundBrush}">
-
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="2"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="2"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="2"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock FontSize="22"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           Margin="0 0 0 0"
+                           TextAlignment="Center"
+                           Foreground="{Binding WeighViewModel.Rs232.ComState, Converter={StaticResource ComStateToForegroundConverter}}"
+                           Text="{Binding WeighViewModel.Rs232.ComState, Converter={StaticResource EnumDescriptionConverter}}"/>
+                <Grid Grid.Column="1" Background="White" Margin="0 3 0 3"></Grid>
+                <TextBlock Grid.Column="2"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           Margin="0 0 0 0"
+                           TextAlignment="Center"
+                           Foreground="{Binding PrinterViewModel.PrinterModel.PrinterState, Converter={StaticResource PrinterStateToForegroundConverter}}"
+                           Text="{Binding PrinterViewModel.PrinterModel.PrinterState, Converter={StaticResource EnumDescriptionConverter}}"/>
+                <Grid Grid.Column="3" Background="White" Margin="0 3 0 3"></Grid>
+                <TextBlock Grid.Column="4"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           Margin="0 0 0 0"
+                           TextAlignment="Center"
+                           Foreground="{Binding PrinterViewModel.PrinterModel.MessageState, Converter={StaticResource MessageStateToForegroundConverter}}"
+                           Text="{Binding PrinterViewModel.PrinterModel.MessageState, Converter={StaticResource EnumDescriptionConverter}}"/>
             </Grid>
         </Border>
     </Grid>

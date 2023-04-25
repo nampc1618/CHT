@@ -21,6 +21,7 @@ namespace CHT.Command.Cmd
             _mainViewModel.WeighViewModel.Rs232.OpenCOM();
             CountdownView countdownView = new CountdownView();
             countdownView.ShowDialog();
+            PrinterViewModel.Instance.PrinterModel.MessageState = Commons.SysStates.EMessageState.NORMAL;
         }
     }
 }

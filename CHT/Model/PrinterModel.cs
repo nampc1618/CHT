@@ -20,6 +20,8 @@ namespace CHT.Model
             _ip = xmlManagement.SelectSingleNode("//Ip").InnerText;
             _port = xmlManagement.SelectSingleNode("//Port").InnerText;
             _fieldName = xmlManagement.SelectSingleNode("//Field").InnerText;
+            _requestCode = xmlManagement.GetAttributeValueFromXPath("//Printer//Commands//Command[@id='3']", "code");
+            _updateFieldCode = xmlManagement.GetAttributeValueFromXPath("//Printer//Commands//Command[@id='4']", "code");
         }
         private string _ip;
         public string IP
@@ -76,5 +78,36 @@ namespace CHT.Model
                 SetProperty(ref _checkHeartbeat, value);
             }
         }
+        private SysStates.EPrinterState _printerState = SysStates.EPrinterState.NONE;
+        public SysStates.EPrinterState PrinterState
+        {
+            get { return _printerState; }
+            set
+            {
+                SetProperty(ref _printerState, value);
+            }
+        }
+        private SysStates.EMessageState _messageState = SysStates.EMessageState.NORMAL;
+        public SysStates.EMessageState MessageState
+        {
+            get { return _messageState; }
+            set
+            {
+                SetProperty(ref _messageState, value);
+            }
+        }
+        private string _requestCode;
+        private string _updateFieldCode;
+       
+        #region Cmds for control printer
+        public string GetRequestCode()
+        {
+            return (char)0x2 + _requestCode + (char)0x3;
+        }
+        public string UpdateFieldCode()
+        {
+            return (char)0x2 + _updateFieldCode + (char)0x3;
+        }
+        #endregion
     }
 }
