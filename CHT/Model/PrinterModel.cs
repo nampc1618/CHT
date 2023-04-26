@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using CHT.Commons;
 using Kis.Toolkit;
+using log4net.Repository.Hierarchy;
+using Npc.NNetSocket;
 
 namespace CHT.Model
 {
@@ -12,16 +16,21 @@ namespace CHT.Model
     {
 
         XmlManagement xmlManagement;
+        public NClientSocket NClientSocket;
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public PrinterModel()
         {
             xmlManagement = new XmlManagement();
             xmlManagement.Load(CommonPaths.PrinterXmlPath);
 
-            _ip = xmlManagement.SelectSingleNode("//Ip").InnerText;
-            _port = xmlManagement.SelectSingleNode("//Port").InnerText;
-            _fieldName = xmlManagement.SelectSingleNode("//Field").InnerText;
-            _requestCode = xmlManagement.GetAttributeValueFromXPath("//Printer//Commands//Command[@id='3']", "code");
-            _updateFieldCode = xmlManagement.GetAttributeValueFromXPath("//Printer//Commands//Command[@id='4']", "code");
+            _ip = xmlManagement.SelectSingleNode("//Ip").InnerText.Trim();
+            _port = xmlManagement.SelectSingleNode("//Port").InnerText.Trim();
+            _fieldName = xmlManagement.SelectSingleNode("//Field").InnerText.Trim();
+            LengthCounter = xmlManagement.SelectSingleNode("//LenghtCounter").InnerText.Trim();
+            CircleRequest = xmlManagement.SelectSingleNode("//CircleRequest").InnerText.Trim();
+            _requestCode = xmlManagement.GetAttributeValueFromXPath("//Printer//Commands//Command[@id='3']", "code").Trim();
+            _updateFieldCode = xmlManagement.GetAttributeValueFromXPath("//Printer//Commands//Command[@id='4']", "code").Trim();
+
         }
         private string _ip;
         public string IP
@@ -98,7 +107,20 @@ namespace CHT.Model
         }
         private string _requestCode;
         private string _updateFieldCode;
-       
+        public string LengthCounter { get; set; }
+        public string CircleRequest { get; set; }
+
+        private int _counterPrinter = 0;
+        public int CounterPrinter
+        {
+            get { return _counterPrinter; }
+            set
+            {
+                SetProperty(ref _counterPrinter, value);
+            }
+        }
+
+
         #region Cmds for control printer
         public string GetRequestCode()
         {
@@ -108,6 +130,66 @@ namespace CHT.Model
         {
             // Data send to: \u0002UTenTienich\n82\u0003
             return (char)0x2 + _updateFieldCode + _fieldName + (char)0xA + data + (char)0x3;
+        }
+        #endregion
+        #region Method
+
+        private CancellationTokenSource _cancellationTokenSource;
+        private Task _taskRun;
+        public void Start(int delay)
+        {
+            if (_taskRun != null && !_taskRun.IsCompleted)
+                return;
+            SemaphoreSlim initializationSemaphore = new SemaphoreSlim(0, 1);
+            _cancellationTokenSource = new CancellationTokenSource();
+            _taskRun = Task.Run(async () =>
+            {
+                try
+                {
+                    while (!_cancellationTokenSource.IsCancellationRequested)
+                    {
+                        if (this.NClientSocket != null)
+                        {
+                            this.NClientSocket.SendMsg(GetRequestCode());
+                        }
+                        if (initializationSemaphore != null)
+                            initializationSemaphore.Release();
+                        await Task.Delay(delay);
+                    }
+                }
+                finally
+                {
+                    if (initializationSemaphore != null)
+                        initializationSemaphore.Release();
+                }
+            }, _cancellationTokenSource.Token);
+
+            //await initializationSemaphore.WaitAsync();
+            initializationSemaphore.Dispose();
+            initializationSemaphore = null;
+
+            if (_taskRun.IsFaulted)
+            {
+                //await _taskRun;
+            }
+        }
+        public void Stop()
+        {
+            try
+            {
+                if (_cancellationTokenSource == null) return;
+                if (_cancellationTokenSource.IsCancellationRequested)
+                    return;
+                if (!_taskRun.IsCompleted)
+                {
+                    _cancellationTokenSource.Cancel();
+                    //await _taskRun;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         #endregion
     }

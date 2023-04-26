@@ -37,8 +37,9 @@ namespace CHT.Commons
 
             xmlManagement = new XmlManagement();
             xmlManagement.Load(CommonPaths.WeighXmlPath);
-            PortSelected = xmlManagement.SelectSingleNode("//PortName").InnerText;
-            BaudRateSelected = xmlManagement.SelectSingleNode("//BaudRate").InnerText;
+            PortSelected = xmlManagement.SelectSingleNode("//PortName").InnerText.Trim();
+            BaudRateSelected = xmlManagement.SelectSingleNode("//BaudRate").InnerText.Trim();
+            CircleReceiveData = Convert.ToInt32((xmlManagement.SelectSingleNode("//CircleReceiveData").InnerText.Trim()));
             Init();
 #if !NO_TEST
             _portList = SerialPort.GetPortNames().ToList();
@@ -112,6 +113,7 @@ namespace CHT.Commons
                 _recieveData = value;
             }
         }
+        
         private string dataForShow;
         public string DataForShow
         {
@@ -130,6 +132,8 @@ namespace CHT.Commons
                 SetProperty(ref _comState, value);
             }
         }
+
+        public int CircleReceiveData { get; set; }
 
         //private List<int> _baudRateList;
         //public List<int> BaudRateList
@@ -151,7 +155,7 @@ namespace CHT.Commons
             _rs232COM.Parity = Parity.None;
             _rs232COM.StopBits = StopBits.One;
             _rs232COM.DataReceived += new SerialDataReceivedEventHandler(_rs232COM_DataReceived);
-            Logger.Info("Create the rs232COM object is success.");
+            this.OpenCOM();
         }
         private async void _rs232COM_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -171,9 +175,11 @@ namespace CHT.Commons
                 float f = 0.000f;
                 if (!float.TryParse(s, out f))
                     return;
-                if (f == 1.000f)
+                ComState = SysStates.EComState.RECEIVING_DATA;
+                if (f == 1.000f || f == 0.000f)
                 {
                     f = 0.000f;
+                    return;
                 }
                 if (WeightModel.UnitId.Equals("g"))
                 {
@@ -184,7 +190,7 @@ namespace CHT.Commons
                     DataForShow = f.ToString();
                 }
                 MainViewModel.Instance.ShowData(DataForShow);
-                await Task.Delay(300);
+                await Task.Delay(CircleReceiveData);
             });
         }
         public bool OpenCOM()
@@ -195,7 +201,6 @@ namespace CHT.Commons
                 if (_rs232COM.IsOpen)
                 {
                     ComState = SysStates.EComState.OPENED;
-                    PrinterViewModel.Instance.PrinterModel.MessageState = Commons.SysStates.EMessageState.NORMAL;
                     Logger.InfoFormat("Opened {0} port", PortSelected);
                 }
                 else

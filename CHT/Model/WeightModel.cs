@@ -17,8 +17,8 @@ namespace CHT.Model
             _unitIdList = new List<string>() { "g", "kg" };
             xmlManagement = new XmlManagement();
             xmlManagement.Load(CommonPaths.WeighXmlPath);
-            _unitId = xmlManagement.GetAttributeValueFromXPath("//Weight", "UnitId");
-            _delay = xmlManagement.SelectSingleNode("//Delay").InnerText;
+            _unitId = xmlManagement.GetAttributeValueFromXPath("//Weight", "UnitId").Trim();
+            _delay = xmlManagement.SelectSingleNode("//Delay").InnerText.Trim();
             Logger.Info("Create WeightModel success.");
         }
         private string _unitId;

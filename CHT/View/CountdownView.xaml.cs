@@ -38,8 +38,8 @@ namespace CHT.View
                     _timer.Stop();
                     MainViewModel.Instance.OpacityMain = 1.0;
                     MainViewModel.Instance.WeighViewModel.Rs232.CloseCOM();
-                    PrinterViewModel.Instance.NClientSocket.SendMsg(PrinterViewModel.Instance.PrinterModel.
-                                                            UpdateFieldCode(MainViewModel.Instance.WeighViewModel.Rs232.DataForShow));
+                    //PrinterViewModel.Instance.NClientSocket.SendMsg(PrinterViewModel.Instance.PrinterModel.
+                    //                                        UpdateFieldCode(MainViewModel.Instance.WeighViewModel.Rs232.DataForShow));
                     Logger.InfoFormat("Weight is: {0}", MainViewModel.Instance.WeighViewModel.Rs232.DataForShow);
                     Logger.InfoFormat("Data send to: {0}", PrinterViewModel.Instance.PrinterModel.
                                                            UpdateFieldCode(MainViewModel.Instance.WeighViewModel.Rs232.DataForShow));

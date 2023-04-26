@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using Npc.NNetSocket;
 using System.Windows;
+using static CHT.Commons.SysStates;
 
 namespace CHT.ViewModel
 {
     public class PrinterViewModel : ViewModelBase
     {
-        public NClientSocket NClientSocket;
-        private static Dispatcher _dispatcher;
+
+        private Dispatcher _dispatcher;
         public static PrinterViewModel Instance { get; private set; }
         public PrinterModel PrinterModel { get; private set; }
         public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -25,14 +26,14 @@ namespace CHT.ViewModel
             }
             else
                 return;
-            _dispatcher= dispatcher;
+            _dispatcher = dispatcher;
             PrinterModel = new PrinterModel();
             Logger.Info("Create a PrinterModel object is success.");
 
-            NClientSocket = new NClientSocket(PrinterModel.IP, Convert.ToInt32(PrinterModel.Port));
-            NClientSocket.ConnectionEventCallback += NClientSocket_ConnectionEventCallback;
-            NClientSocket.ClientErrorEventCallback += NClientSocket_ClientErrorEventCallback;
-            NClientSocket.ClientConnect();
+            PrinterModel.NClientSocket = new NClientSocket(PrinterModel.IP, Convert.ToInt32(PrinterModel.Port));
+            PrinterModel.NClientSocket.ConnectionEventCallback += NClientSocket_ConnectionEventCallback;
+            PrinterModel.NClientSocket.ClientErrorEventCallback += NClientSocket_ClientErrorEventCallback;
+            PrinterModel.NClientSocket.ClientConnect();
             Logger.Info("Create a NClientSocket object is success.");
         }
 
@@ -40,27 +41,59 @@ namespace CHT.ViewModel
         {
             MessageBox.Show(errorMsg);
         }
-
-        private void NClientSocket_ConnectionEventCallback(NClientSocket.EConnectionEventClient e, object obj)
+        private async void NClientSocket_ConnectionEventCallback(NClientSocket.EConnectionEventClient e, object obj)
+        {
+            await this._dispatcher.BeginInvoke(new Action(async () =>
+            {
+                await ConnectionEventCallbackAsync(e, obj);
+            }));
+        }
+        private async Task ConnectionEventCallbackAsync(NClientSocket.EConnectionEventClient e, object obj)
         {
             switch (e)
             {
                 case NClientSocket.EConnectionEventClient.RECEIVEDATA:
-                    string s = NClientSocket.ReceiveString;
-                    if (!string.IsNullOrEmpty(s))
+                    await Task.Factory.StartNew(() =>
                     {
-                        PrinterModel.MessageState = Commons.SysStates.EMessageState.UPDATE_FIELD_SUCCESS;
-                        Logger.Info("Updated the field is success.");
-                    }
+                        string sReceive = PrinterModel.NClientSocket.ReceiveString;
+                        if (!string.IsNullOrEmpty(sReceive))
+                        {
+
+                            if (sReceive.Length >= Convert.ToInt32(PrinterModel.LengthCounter)
+                            && !sReceive.Contains("$") || !sReceive.Contains("!"))
+                            {
+                                int i;
+                                if (!int.TryParse(sReceive.Substring(1, 8), out i))
+                                    return;
+                                int counter = i;
+                                if (PrinterModel.CounterPrinter < counter)
+                                {
+                                    PrinterModel.NClientSocket.SendMsg(PrinterModel.UpdateFieldCode(WeighViewModel.Instance.Rs232.DataForShow));
+                                    //WeighViewModel.Instance.Rs232.DataForShow = null;
+                                    PrinterModel.CounterPrinter = counter;
+                                    PrinterModel.MessageState = Commons.SysStates.EMessageState.UPDATE_FIELD_SUCCESS;
+                                    Logger.Info("Updated the field is success.");
+                                }
+                                else
+                                {
+                                    PrinterModel.MessageState = Commons.SysStates.EMessageState.NORMAL;
+                                    return;
+                                }
+                            }
+
+                        }
+                    });
                     break;
                 case NClientSocket.EConnectionEventClient.CLIENTCONNECTED:
                     PrinterModel.PrinterState = Commons.SysStates.EPrinterState.CONNECTED;
                     PrinterModel.MessageState = Commons.SysStates.EMessageState.NORMAL;
+                    PrinterModel.Start(Convert.ToInt32(PrinterModel.CircleRequest));
                     Logger.Info("Connect to the printer is success.");
                     break;
                 case NClientSocket.EConnectionEventClient.CLIENTDISCONNECTED:
                     PrinterModel.PrinterState = Commons.SysStates.EPrinterState.DISCONECTED;
                     PrinterModel.MessageState = Commons.SysStates.EMessageState.NORMAL;
+                    PrinterModel.Stop();
                     Logger.Info("Disconnect to the printer.");
                     break;
                 default:
