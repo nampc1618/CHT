@@ -34,14 +34,41 @@ namespace CHT.Converters
                 return (SolidColorBrush)new BrushConverter().ConvertFromString("#000000");
             }
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
     }
-
-    public class PrinterStateToForegroundConverter : IValueConverter
+    public class ComStateToForeground2Converter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value != null)
+            {
+                switch ((SysStates.EComState)value)
+                {
+                    case SysStates.EComState.NONE:
+                    case SysStates.EComState.OPENED:
+                    case SysStates.EComState.CLOSED:
+                        return (SolidColorBrush)new BrushConverter().ConvertFromString("#D8E1E4");
+                    case SysStates.EComState.RECEIVING_DATA:
+                        return (SolidColorBrush)new BrushConverter().ConvertFromString("#E9474F");
+                    default:
+                        return (SolidColorBrush)new BrushConverter().ConvertFromString("#D8E1E4");
+                }
+            }
+            else
+            {
+                return (SolidColorBrush)new BrushConverter().ConvertFromString("#D8E1E4");
+            }
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+        
+        public class PrinterStateToForegroundConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

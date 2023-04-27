@@ -33,9 +33,11 @@ namespace CHT.Command.Cmd
                         XmlNode nodePortName = xmlManagement.SelectSingleNode("//PortName");
                         XmlNode nodeBaud = xmlManagement.SelectSingleNode("//BaudRate");
                         XmlNode nodeDelay = xmlManagement.SelectSingleNode("//Delay");
+                        XmlNode nodeCircleReceiveData = xmlManagement.SelectSingleNode("//CircleReceiveData");
                         xmlManagement.SetNodeValueFromNode(nodePortName, WeighViewModel.Instance.Rs232.PortSelected);
                         xmlManagement.SetNodeValueFromNode(nodeBaud, WeighViewModel.Instance.Rs232.BaudRateSelected);
                         xmlManagement.SetNodeValueFromNode(nodeDelay, WeighViewModel.Instance.Rs232.WeightModel.Delay);
+                        xmlManagement.SetNodeValueFromNode(nodeCircleReceiveData, WeighViewModel.Instance.Rs232.CircleReceiveData.ToString());
                         xmlManagement.SetAttributeValueFromXPath("//Weight", "UnitId", WeighViewModel.Instance.Rs232.WeightModel.UnitId);
                         if(xmlManagement.Save(CommonPaths.WeighXmlPath))
                         {

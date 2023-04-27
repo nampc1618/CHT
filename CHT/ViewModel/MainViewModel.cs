@@ -68,6 +68,8 @@ namespace CHT.ViewModel
             this.OpenSettingsView = new OpenSettingsViewCmd(this);
             this.Refesh = new RefreshCmd(this);
             Logger.Info("Initialize all Commands is done.");
+
+            ShowData(WeighViewModel.Rs232.DataForShow);
         }
         public void WirteTest(Paragraph para, string text)
         {

@@ -9,7 +9,7 @@
     <Command id="4" name="updateField" code="U" />
   </Commands>
   <MsgName>msgName</MsgName>
-  <Field>fieldName</Field>
+  <Field>DEM</Field>
   <LenghtCounter>10</LenghtCounter>
   <CircleRequest>200</CircleRequest>
   <CheckHeartbeat>9000</CheckHeartbeat>

@@ -114,7 +114,7 @@ namespace CHT.Commons
             }
         }
         
-        private string dataForShow;
+        private string dataForShow = "NODATA";
         public string DataForShow
         {
             get { return dataForShow; }
@@ -133,7 +133,15 @@ namespace CHT.Commons
             }
         }
 
-        public int CircleReceiveData { get; set; }
+        private int _circleReceiveData;
+        public int CircleReceiveData
+        {
+            get { return _circleReceiveData; }
+            set
+            {
+                SetProperty(ref _circleReceiveData, value);
+            }
+        }
 
         //private List<int> _baudRateList;
         //public List<int> BaudRateList
@@ -174,13 +182,12 @@ namespace CHT.Commons
                 string s = RecieveData.Substring(RecieveData.IndexOf("0"), 5);
                 float f = 0.000f;
                 if (!float.TryParse(s, out f))
-                    return;
-                ComState = SysStates.EComState.RECEIVING_DATA;
-                if (f == 1.000f || f == 0.000f)
                 {
-                    f = 0.000f;
+                    DataForShow = "NODATA";
+                    MainViewModel.Instance.ShowData(DataForShow);
                     return;
                 }
+                ComState = SysStates.EComState.RECEIVING_DATA;
                 if (WeightModel.UnitId.Equals("g"))
                 {
                     DataForShow = (f * 1000).ToString("0.");

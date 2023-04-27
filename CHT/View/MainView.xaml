@@ -18,6 +18,7 @@
         <cvt:ComStateToForegroundConverter x:Key="ComStateToForegroundConverter"/>
         <cvt:PrinterStateToForegroundConverter x:Key="PrinterStateToForegroundConverter"/>
         <cvt:MessageStateToForegroundConverter x:Key="MessageStateToForegroundConverter" />
+        <cvt:ComStateToForeground2Converter x:Key="ComStateToForeground2Converter"/>
     </Window.Resources>
     <Window.InputBindings>
         <!--<KeyBinding Key="Enter"
@@ -120,7 +121,7 @@
                                TextAlignment="Center"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"
-                               Foreground="Crimson"/>
+                               Foreground="{Binding WeighViewModel.Rs232.ComState, Converter={StaticResource ComStateToForeground2Converter}}"/>
                         <TextBlock Grid.Column="2"
                                Margin="20 120 0 0"
                                FontSize="120"

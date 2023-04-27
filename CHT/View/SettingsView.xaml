@@ -17,7 +17,7 @@
         <Grid Background="{DynamicResource InputBackgroundBrush}"
               Margin="3">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="1.3*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <GroupBox Margin="12"
@@ -27,6 +27,7 @@
                       Foreground="White">
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
+                        <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
@@ -100,7 +101,8 @@
                             BorderThickness="1 1 1 1"
                             CornerRadius="3"
                             Grid.Row="3"
-                            Margin="2">
+                            Margin="2"
+                            Visibility="Collapsed">
                         <DockPanel LastChildFill="True">
                             <TextBlock Margin="10 3 3 3"
                                    Text="Thời gian đợi (s)"
@@ -117,7 +119,28 @@
                                      Text="{Binding WeighViewModel.Rs232.WeightModel.Delay, Mode=TwoWay}"/>
                         </DockPanel>
                     </Border>
-                    <DockPanel Grid.Row="4">
+                    <Border BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="1 1 1 1"
+                            CornerRadius="3"
+                            Grid.Row="4"
+                            Margin="2">
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Margin="10 3 3 3"
+                                   Text="Circle Data (ms)"
+                                   Foreground="White"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"/>
+                            <TextBox Margin="155 5 0 5"
+                                     Width="100"
+                                     FontSize="16"
+                                     TextAlignment="Right"
+                                     VerticalContentAlignment="Center"
+                                     Padding="2"
+                                     FontWeight="Bold"
+                                     Text="{Binding WeighViewModel.Rs232.CircleReceiveData, Mode=TwoWay}"/>
+                        </DockPanel>
+                    </Border>
+                    <DockPanel Grid.Row="5">
                         <Button Margin="300 5 0 5"
                                 Width="80"
                                 Height="30"
