@@ -4,6 +4,7 @@ using CHT.Model;
 using CHT.ViewModel;
 using Kis.Toolkit;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
@@ -33,6 +34,7 @@ namespace CHT.Commons
                 "19200",
                 "38400"
             };
+            _queueFields = new Queue<string>();
             WeightModel = new WeightModel();
 
             xmlManagement = new XmlManagement();
@@ -143,6 +145,16 @@ namespace CHT.Commons
             }
         }
 
+        private Queue<string> _queueFields;
+        public Queue<string> QueueFields
+        {
+            get { return _queueFields; }
+            set
+            {
+                SetProperty(ref _queueFields, value);
+            }
+        }
+
         //private List<int> _baudRateList;
         //public List<int> BaudRateList
         //{
@@ -183,11 +195,23 @@ namespace CHT.Commons
                 float f = 0.000f;
                 if (!float.TryParse(s, out f))
                 {
-                    DataForShow = "NODATA";
-                    MainViewModel.Instance.ShowData(DataForShow);
+                    //DataForShow = "NODATA";
+                    MainViewModel.Instance.ShowData("NODATA");
                     return;
                 }
                 ComState = SysStates.EComState.RECEIVING_DATA;
+                if( f >= 0.000f && f  <= 0.002f )
+                {
+                    if (WeightModel.UnitId.Equals("g"))
+                    {
+                        MainViewModel.Instance.ShowData((f * 1000).ToString("0."));
+                    }
+                    else if (WeightModel.UnitId.Equals("kg"))
+                    {
+                        MainViewModel.Instance.ShowData(f.ToString());
+                    }
+                    return;
+                }
                 if (WeightModel.UnitId.Equals("g"))
                 {
                     DataForShow = (f * 1000).ToString("0.");
@@ -195,6 +219,10 @@ namespace CHT.Commons
                 else if (WeightModel.UnitId.Equals("kg"))
                 {
                     DataForShow = f.ToString();
+                }
+                if (QueueFields != null)
+                {
+                    QueueFields.Enqueue(DataForShow);
                 }
                 MainViewModel.Instance.ShowData(DataForShow);
                 await Task.Delay(CircleReceiveData);
