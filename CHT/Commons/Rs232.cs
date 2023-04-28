@@ -212,6 +212,9 @@ namespace CHT.Commons
                     }
                     return;
                 }
+                // Trigger Weight
+                // Show CountdownView
+
                 if (WeightModel.UnitId.Equals("g"))
                 {
                     DataForShow = (f * 1000).ToString("0.");
@@ -219,10 +222,6 @@ namespace CHT.Commons
                 else if (WeightModel.UnitId.Equals("kg"))
                 {
                     DataForShow = f.ToString();
-                }
-                if (QueueFields != null)
-                {
-                    QueueFields.Enqueue(DataForShow);
                 }
                 MainViewModel.Instance.ShowData(DataForShow);
                 await Task.Delay(CircleReceiveData);

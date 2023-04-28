@@ -102,7 +102,7 @@
                             CornerRadius="3"
                             Grid.Row="3"
                             Margin="2"
-                            Visibility="Collapsed">
+                            Visibility="Visible">
                         <DockPanel LastChildFill="True">
                             <TextBlock Margin="10 3 3 3"
                                    Text="Thời gian đợi (s)"
