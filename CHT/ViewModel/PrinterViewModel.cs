@@ -68,11 +68,25 @@ namespace CHT.ViewModel
                                 int counter = i;
                                 if (PrinterModel.CounterPrinter < counter)
                                 {
-                                    PrinterModel.NClientSocket.SendMsg(PrinterModel.UpdateFieldCode(WeighViewModel.Instance.Rs232.DataForShow));
-                                    //WeighViewModel.Instance.Rs232.DataForShow = null;
-                                    PrinterModel.CounterPrinter = counter;
-                                    PrinterModel.MessageState = Commons.SysStates.EMessageState.UPDATE_FIELD_SUCCESS;
-                                    Logger.Info("Updated the field is success.");
+                                    try
+                                    {
+                                        string data = "";
+                                        if (WeighViewModel.Instance.Rs232.QueueFields.Count == 0)
+                                        {
+                                            return;
+                                        }
+                                        data = WeighViewModel.Instance.Rs232.QueueFields.Peek().ToString();
+                                        WeighViewModel.Instance.Rs232.QueueFields.Dequeue();
+                                        PrinterModel.NClientSocket.SendMsg(PrinterModel.UpdateFieldCode(data));
+                                        //WeighViewModel.Instance.Rs232.DataForShow = null;
+                                        PrinterModel.CounterPrinter = counter;
+                                        PrinterModel.MessageState = Commons.SysStates.EMessageState.UPDATE_FIELD_SUCCESS;
+                                        Logger.Info("Updated the field is success.");
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show(ex.ToString());
+                                    }
                                 }
                                 else
                                 {
