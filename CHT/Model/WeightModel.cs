@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CHT.Commons;
+using CHT.View;
 using Kis.Toolkit;
 
 namespace CHT.Model
@@ -48,6 +49,22 @@ namespace CHT.Model
             set
             {
                 SetProperty(ref _delay, value);
+            }
+        }
+        private bool _triggerWeight;
+        public bool TriggerWeight
+        {
+            get { return _triggerWeight; }
+            set
+            {
+                if(SetProperty(ref _triggerWeight, value))
+                {
+                    if (_triggerWeight == true)
+                    {
+                        CountdownView countdownView = new CountdownView();
+                        countdownView.ShowDialog();
+                    }
+                }
             }
         }
     }

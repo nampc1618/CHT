@@ -67,6 +67,7 @@ namespace CHT.ViewModel
             this.PressEnterKey = new PressEnterKeyCmd(this);
             this.OpenSettingsView = new OpenSettingsViewCmd(this);
             this.Refesh = new RefreshCmd(this);
+            this.Test = new TestCmd(this);
             Logger.Info("Initialize all Commands is done.");
 
             ShowData(WeighViewModel.Rs232.DataForShow);
@@ -125,6 +126,7 @@ namespace CHT.ViewModel
                 SetProperty(ref _opacityMain, value);
             }
         }
+        public ICommand Test { get; }
         public ICommand Refesh { get; }
         public ICommand OpenCOM { get; }
         public ICommand CloseCOM { get; }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,7 +38,7 @@ namespace CHT.View
                 {
                     _timer.Stop();
                     MainViewModel.Instance.OpacityMain = 1.0;
-                    MainViewModel.Instance.WeighViewModel.Rs232.CloseCOM();
+                    MainViewModel.Instance.WeighViewModel.Rs232.WeightModel.TriggerWeight = false;
                     //PrinterViewModel.Instance.NClientSocket.SendMsg(PrinterViewModel.Instance.PrinterModel.
                     //                                        UpdateFieldCode(MainViewModel.Instance.WeighViewModel.Rs232.DataForShow));
                     Logger.InfoFormat("Weight is: {0}", MainViewModel.Instance.WeighViewModel.Rs232.DataForShow);

@@ -3,5 +3,5 @@
   <PortName>COM2</PortName>
   <BaudRate>9600</BaudRate>
   <CircleReceiveData>200</CircleReceiveData>
-  <Delay>3</Delay>
+  <Delay>1</Delay>
 </Weight>

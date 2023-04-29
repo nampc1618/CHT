@@ -213,7 +213,7 @@ namespace CHT.Commons
                     return;
                 }
                 // Trigger Weight
-                // Show CountdownView
+                WeightModel.TriggerWeight = true;
 
                 if (WeightModel.UnitId.Equals("g"))
                 {

@@ -184,6 +184,26 @@
                            TextAlignment="Center"
                            Foreground="{Binding PrinterViewModel.PrinterModel.MessageState, Converter={StaticResource MessageStateToForegroundConverter}}"
                            Text="{Binding PrinterViewModel.PrinterModel.MessageState, Converter={StaticResource EnumDescriptionConverter}}"/>
+                <Grid Grid.Column="5" Background="White" Margin="0 3 0 3"></Grid>
+                <StackPanel Orientation="Horizontal"
+                            Grid.Column="6">
+                    <TextBlock Margin="20 0 0 0"
+                               Text="Bộ đếm máy in:"
+                               FontSize="22"
+                               TextAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"/>
+                    <TextBlock FontSize="22"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           Margin="10 0 0 0"
+                           TextAlignment="Center"
+                           Text="{Binding PrinterViewModel.PrinterModel.CounterPrinter}"/>
+                    <Button Content="Test"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Command="{Binding Test}"/>
+                </StackPanel>
             </Grid>
         </Border>
     </Grid>
