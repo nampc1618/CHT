@@ -27,6 +27,8 @@ namespace CHT.Model
             _port = xmlManagement.SelectSingleNode("//Port").InnerText.Trim();
             _fieldName = xmlManagement.SelectSingleNode("//Field").InnerText.Trim();
             LengthCounter = xmlManagement.SelectSingleNode("//LenghtCounter").InnerText.Trim();
+            StartIndex = Convert.ToInt32(xmlManagement.GetAttributeValueFromXPath("//Printer//SubStringSplit", "startIndex").Trim());
+            EndIndex = Convert.ToInt32(xmlManagement.GetAttributeValueFromXPath("//Printer//SubStringSplit", "endIndex").Trim());
             CircleRequest = xmlManagement.SelectSingleNode("//CircleRequest").InnerText.Trim();
             _requestCode = xmlManagement.GetAttributeValueFromXPath("//Printer//Commands//Command[@id='3']", "code").Trim();
             _updateFieldCode = xmlManagement.GetAttributeValueFromXPath("//Printer//Commands//Command[@id='4']", "code").Trim();
@@ -109,6 +111,8 @@ namespace CHT.Model
         private string _updateFieldCode;
         public string LengthCounter { get; set; }
         public string CircleRequest { get; set; }
+        public int StartIndex { get; set; }
+        public int EndIndex { get; set; }
 
         private int _counterPrinter = 0;
         public int CounterPrinter

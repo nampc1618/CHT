@@ -20,6 +20,7 @@ namespace CHT.Model
             xmlManagement.Load(CommonPaths.WeighXmlPath);
             _unitId = xmlManagement.GetAttributeValueFromXPath("//Weight", "UnitId").Trim();
             _delay = xmlManagement.SelectSingleNode("//Delay").InnerText.Trim();
+            _sequenceResult = new List<string>();
             Logger.Info("Create WeightModel success.");
         }
         private string _unitId;
@@ -65,6 +66,15 @@ namespace CHT.Model
                         countdownView.ShowDialog();
                     }
                 }
+            }
+        }
+        private List<string> _sequenceResult;
+        public List<string> SequenceResult
+        {
+            get { return _sequenceResult; }
+            set
+            {
+                SetProperty(ref _sequenceResult, value);
             }
         }
     }
