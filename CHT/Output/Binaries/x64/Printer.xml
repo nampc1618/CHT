@@ -11,6 +11,7 @@
   <MsgName>msgName</MsgName>
   <Field>DEM</Field>
   <LenghtCounter>10</LenghtCounter>
+  <SubStringSplit startIndex="1" endIndex="8"/>
   <CircleRequest>200</CircleRequest>
   <CheckHeartbeat>9000</CheckHeartbeat>
 </Printer>
