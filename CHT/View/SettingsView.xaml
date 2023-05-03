@@ -66,6 +66,7 @@
                                    FontSize="16"
                                    VerticalAlignment="Center"/>
                             <ComboBox Margin="40 5 0 5"
+                                      IsEnabled="False"
                                       Width="260"
                                       FontSize="16"
                                       FontWeight="Bold"
@@ -196,6 +197,7 @@
                                    FontSize="16"
                                    VerticalAlignment="Center"/>
                             <TextBox Margin="142 5 0 5"
+                                     IsEnabled="False"
                                      Width="200"
                                      FontSize="16"
                                      TextAlignment="Right"

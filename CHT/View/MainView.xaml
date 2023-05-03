@@ -202,6 +202,7 @@
                     <Button Content="Test"
                             FontSize="12"
                             FontWeight="Bold"
+                            Visibility="Collapsed"
                             Command="{Binding Test}"/>
                 </StackPanel>
             </Grid>
