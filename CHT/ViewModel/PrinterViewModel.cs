@@ -53,8 +53,8 @@ namespace CHT.ViewModel
             switch (e)
             {
                 case NClientSocket.EConnectionEventClient.RECEIVEDATA:
-                    await Task.Factory.StartNew(() =>
-                    {
+                    //await Task.Factory.StartNew(() =>
+                    //{
                         string sReceive = PrinterModel.NClientSocket.ReceiveString;
                         if (!string.IsNullOrEmpty(sReceive))
                         {
@@ -63,8 +63,12 @@ namespace CHT.ViewModel
                             && !sReceive.Contains("$") || !sReceive.Contains("!"))
                             {
                                 int i;
-                                if (!int.TryParse(sReceive.Substring(1, 8), out i))
+                                if (!int.TryParse(sReceive.Substring(PrinterModel.StartIndex, PrinterModel.EndIndex), out i))
+                                {
+                                    Logger.InfoFormat("Data received: {0}", sReceive);
                                     return;
+                                }
+                                    
                                 int counter = i;
                                 if (PrinterModel.CounterPrinter < counter)
                                 {
@@ -78,7 +82,8 @@ namespace CHT.ViewModel
                                         data = WeighViewModel.Instance.Rs232.QueueFields.Peek().ToString();
                                         WeighViewModel.Instance.Rs232.QueueFields.Dequeue();
                                         PrinterModel.NClientSocket.SendMsg(PrinterModel.UpdateFieldCode(data));
-                                        //WeighViewModel.Instance.Rs232.DataForShow = null;
+                                        Logger.InfoFormat("Weight data send to field is: {0}", data);
+
                                         PrinterModel.CounterPrinter = counter;
                                         PrinterModel.MessageState = Commons.SysStates.EMessageState.UPDATE_FIELD_SUCCESS;
                                         Logger.Info("Updated the field is success.");
@@ -96,7 +101,8 @@ namespace CHT.ViewModel
                             }
 
                         }
-                    });
+                        await Task.Delay(20);
+                    //});
                     break;
                 case NClientSocket.EConnectionEventClient.CLIENTCONNECTED:
                     PrinterModel.PrinterState = Commons.SysStates.EPrinterState.CONNECTED;
