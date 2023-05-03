@@ -181,14 +181,13 @@ namespace CHT.Commons
         {
             await this._dispatcher.BeginInvoke(new Action(async () =>
             {
-                _comState = SysStates.EComState.RECEIVING_DATA;
                 await DataReceived(sender, e);
             }));
         }
         private async Task DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            await Task.Factory.StartNew(async () =>
-            {
+            //await Task.Factory.StartNew(async () =>
+            //{
                 // Code
                 RecieveData = _rs232COM.ReadExisting();
                 string s = RecieveData.Substring(RecieveData.IndexOf("0"), 5);
@@ -202,6 +201,11 @@ namespace CHT.Commons
                 ComState = SysStates.EComState.RECEIVING_DATA;
                 if( f >= 0.000f && f  <= 0.002f )
                 {
+                    if (WeightModel.SequenceResult.Count > 0)
+                    {
+                        QueueFields.Enqueue(WeightModel.SequenceResult.Last());
+                        WeightModel.SequenceResult.Clear();
+                    }
                     if (WeightModel.UnitId.Equals("g"))
                     {
                         MainViewModel.Instance.ShowData((f * 1000).ToString("0."));
@@ -212,8 +216,6 @@ namespace CHT.Commons
                     }
                     return;
                 }
-                // Trigger Weight
-                WeightModel.TriggerWeight = true;
 
                 if (WeightModel.UnitId.Equals("g"))
                 {
@@ -224,8 +226,12 @@ namespace CHT.Commons
                     DataForShow = f.ToString();
                 }
                 MainViewModel.Instance.ShowData(DataForShow);
+
+                // Trigger Weight
+                WeightModel.TriggerWeight = true;
+
                 await Task.Delay(CircleReceiveData);
-            });
+            //});
         }
         public bool OpenCOM()
         {
