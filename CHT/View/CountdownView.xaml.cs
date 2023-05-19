@@ -39,23 +39,23 @@ namespace CHT.View
                     _timer.Stop();
                     MainViewModel.Instance.WeighViewModel.Rs232.WeightModel.SequenceResult.Add(MainViewModel.Instance.WeighViewModel.Rs232.DataForShow);
                     MainViewModel.Instance.OpacityMain = 1.0;
-                    MainViewModel.Instance.WeighViewModel.Rs232.WeightModel.TriggerWeight = false;
+                    //MainViewModel.Instance.WeighViewModel.Rs232.WeightModel.TriggerWeight = false;
                     
                     //Test
                     //MainViewModel.Instance.WeighViewModel.Rs232.QueueFields.Enqueue(MainViewModel.Instance.WeighViewModel.Rs232.WeightModel.ListResult.Last());
                     //PrinterViewModel.Instance.NClientSocket.SendMsg(PrinterViewModel.Instance.PrinterModel.
                     //                                        UpdateFieldCode(MainViewModel.Instance.WeighViewModel.Rs232.DataForShow));
-                    Logger.InfoFormat("Weight data is: {0}", MainViewModel.Instance.WeighViewModel.Rs232.DataForShow);
+                    //Logger.InfoFormat("Weight data is: {0}", MainViewModel.Instance.WeighViewModel.Rs232.DataForShow);
                     //Logger.InfoFormat("Data send to: {0}", PrinterViewModel.Instance.PrinterModel.
                     //                                       UpdateFieldCode(MainViewModel.Instance.WeighViewModel.Rs232.DataForShow));
-                    Logger.Info("Countdown is done.");
+                    //Logger.Info("Countdown is done.");
                     this.Close();
                 }
                 _time = _time.Add(TimeSpan.FromSeconds(-1));
             }, Application.Current.Dispatcher);
 
             _timer.Start();
-            Logger.Info("Start delay time. Countdown...");
+            //Logger.Info("Start delay time. Countdown...");
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
