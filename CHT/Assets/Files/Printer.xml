@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Printer id="1" name="Vj1710">
-  <Ip>127.0.0.1</Ip>
+  <Ip>192.168.1.3</Ip>
   <Port>3100</Port>
   <Commands>
     <Command id="1" name="printOn" code="O1" />
@@ -9,8 +9,9 @@
     <Command id="4" name="updateField" code="U" />
   </Commands>
   <MsgName>msgName</MsgName>
-  <Field>fieldName</Field>
-  <LenghtCounter>10</LenghtCounter>
+  <Field>DEM</Field>
+  <LenghtCounter>12</LenghtCounter>
+  <SubStringSplit startIndex="1" endIndex="10" />
   <CircleRequest>200</CircleRequest>
   <CheckHeartbeat>9000</CheckHeartbeat>
 </Printer>
