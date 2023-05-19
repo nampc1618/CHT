@@ -41,9 +41,9 @@ namespace CHT.ViewModel
         {
             MessageBox.Show(errorMsg);
         }
-        private async void NClientSocket_ConnectionEventCallback(NClientSocket.EConnectionEventClient e, object obj)
+        private void NClientSocket_ConnectionEventCallback(NClientSocket.EConnectionEventClient e, object obj)
         {
-            await this._dispatcher.BeginInvoke(new Action(async () =>
+            this._dispatcher.BeginInvoke(new Action(async () =>
             {
                 await ConnectionEventCallbackAsync(e, obj);
             }));
@@ -60,19 +60,15 @@ namespace CHT.ViewModel
 
                         if (!string.IsNullOrEmpty(sReceive))
                         {
-                            //Logger.InfoFormat("Lenght data: {0}", sReceive.Length);
                             if (sReceive.Length >= Convert.ToInt32(PrinterModel.LengthCounter)
                             && !sReceive.Contains("$") && !sReceive.Contains("!"))
                             {
-                                //Logger.InfoFormat("Data Printer: {0}", sReceive);
-                                //Logger.InfoFormat("subString: {0}", sReceive.Substring(PrinterModel.StartIndex, PrinterModel.EndIndex));
-                                int i;
-                                if (!int.TryParse(sReceive.Substring(PrinterModel.StartIndex, PrinterModel.EndIndex), out i))
+                                if (!int.TryParse(sReceive.Substring(PrinterModel.StartIndex, PrinterModel.EndIndex), out int counter))
                                 {
                                     return;
                                 }
 
-                                int counter = i;
+                                //int counter = i;
                                 //Logger.InfoFormat("Counter: {0}", counter);
                                 if (PrinterModel.CounterPrinter < counter)
                                 {
@@ -124,5 +120,27 @@ namespace CHT.ViewModel
 
             }
         }
+        //private async Task<int> ReadDataFromPrinterAsync()
+        //{
+        //    try
+        //    {
+        //        string sReceive = PrinterModel.NClientSocket.ReceiveString;
+        //        if (!string.IsNullOrEmpty(sReceive))
+        //        {
+        //            if (sReceive.Length >= Convert.ToInt32(PrinterModel.LengthCounter)
+        //                    && !sReceive.Contains("$") && !sReceive.Contains("!"))
+        //            {
+        //                int i = 0;
+        //                int.TryParse(sReceive.Substring(PrinterModel.StartIndex, PrinterModel.EndIndex), out i);
+        //                return await Task.FromResult(i);
+        //            }
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Task.CompletedTask;
+        //    }
+        //}
     }
 }
