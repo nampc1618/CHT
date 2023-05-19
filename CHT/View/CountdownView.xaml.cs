@@ -29,7 +29,7 @@ namespace CHT.View
         {
             InitializeComponent();
 
-            _time = TimeSpan.FromSeconds(Convert.ToInt32(MainViewModel.Instance.WeighViewModel.Rs232.WeightModel.Delay));
+            _time = TimeSpan.FromMilliseconds((Convert.ToDouble(MainViewModel.Instance.WeighViewModel.Rs232.WeightModel.Delay) * 1000));
 
             _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
             {
@@ -51,7 +51,7 @@ namespace CHT.View
                     //Logger.Info("Countdown is done.");
                     this.Close();
                 }
-                _time = _time.Add(TimeSpan.FromSeconds(-1));
+                _time = _time.Add(TimeSpan.FromMilliseconds(-100));
             }, Application.Current.Dispatcher);
 
             _timer.Start();
