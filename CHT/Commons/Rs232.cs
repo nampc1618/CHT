@@ -1,6 +1,7 @@
 ﻿#define NO_TEST
 
 using CHT.Model;
+using CHT.View;
 using CHT.ViewModel;
 using Kis.Toolkit;
 using System;
@@ -23,6 +24,7 @@ namespace CHT.Commons
         public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         XmlManagement xmlManagement;
+        static readonly object objLock = new object();
         public Rs232(Dispatcher dispatcher)
         {
             _dispatcher = dispatcher;
@@ -115,7 +117,7 @@ namespace CHT.Commons
                 _recieveData = value;
             }
         }
-        
+
         private string dataForShow = "NODATA";
         public string DataForShow
         {
@@ -188,18 +190,20 @@ namespace CHT.Commons
         {
             //await Task.Factory.StartNew(async () =>
             //{
+            try
+            {
                 // Code
-                RecieveData = _rs232COM.ReadExisting();
-                string s = RecieveData.Substring(RecieveData.IndexOf("0"), 5);
+                string data = await ReadDataCOMAsync();
+                string s = data.Substring(data.IndexOf("0"), 5);
                 float f = 0.000f;
                 if (!float.TryParse(s, out f))
                 {
                     //DataForShow = "NODATA";
-                    MainViewModel.Instance.ShowData("NODATA");
+                    //MainViewModel.Instance.ShowData("NODATA");
                     return;
                 }
                 ComState = SysStates.EComState.RECEIVING_DATA;
-                if( f >= 0.000f && f  <= 0.002f )
+                if (f >= 0.000f && f <= 0.002f)
                 {
                     if (WeightModel.SequenceResult.Count > 0)
                     {
@@ -214,9 +218,9 @@ namespace CHT.Commons
                     {
                         MainViewModel.Instance.ShowData(f.ToString());
                     }
+                    WeightModel.TriggerWeight = false;
                     return;
                 }
-
                 if (WeightModel.UnitId.Equals("g"))
                 {
                     DataForShow = (f * 1000).ToString("0.");
@@ -226,12 +230,24 @@ namespace CHT.Commons
                     DataForShow = f.ToString();
                 }
                 MainViewModel.Instance.ShowData(DataForShow);
-
                 // Trigger Weight
+                //Logger.Info("Trigger Weight");
+
                 WeightModel.TriggerWeight = true;
 
+
                 await Task.Delay(CircleReceiveData);
+            }
+            catch (Exception ex)
+            {
+                //Logger.Error(ex);
+            }
             //});
+        }
+        private Task<string> ReadDataCOMAsync()
+        {
+            string dataReceived = _rs232COM.ReadExisting();
+            return Task.FromResult(dataReceived);
         }
         public bool OpenCOM()
         {
