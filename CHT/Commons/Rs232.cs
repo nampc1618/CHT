@@ -163,15 +163,19 @@ namespace CHT.Commons
         }
         private async Task DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            await Task.Factory.StartNew(async () =>
+            //await Task.Factory.StartNew(async () =>
+            //{
+            // Code
+            try
             {
-                // Code
-                RecieveData = _rs232COM.ReadExisting();
+                RecieveData = await ReadDataCOMAsync();
+                if (RecieveData.Length < 5)
+                    return;
                 string s = RecieveData.Substring(RecieveData.IndexOf("0"), 5);
                 float f = 0.000f;
                 if (!float.TryParse(s, out f))
                     return;
-                if (f == 1.000f)
+                if (f == 1.000f || f == 2.000f)
                 {
                     f = 0.000f;
                 }
@@ -184,8 +188,17 @@ namespace CHT.Commons
                     DataForShow = f.ToString();
                 }
                 MainViewModel.Instance.ShowData(DataForShow);
-                await Task.Delay(300);
-            });
+                await Task.Delay(200);
+                //});
+            }
+            catch(Exception ex)
+            {
+                
+            }
+        }
+        private async Task<string> ReadDataCOMAsync()
+        {
+            return await Task.FromResult(_rs232COM.ReadExisting());
         }
         public bool OpenCOM()
         {
