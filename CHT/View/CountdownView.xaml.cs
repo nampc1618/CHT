@@ -41,8 +41,8 @@ namespace CHT.View
                     PrinterViewModel.Instance.NClientSocket.SendMsg(PrinterViewModel.Instance.PrinterModel.
                                                             UpdateFieldCode(MainViewModel.Instance.WeighViewModel.Rs232.DataForShow));
                     Logger.InfoFormat("Weight is: {0}", MainViewModel.Instance.WeighViewModel.Rs232.DataForShow);
-                    Logger.InfoFormat("Data send to: {0}", PrinterViewModel.Instance.PrinterModel.
-                                                           UpdateFieldCode(MainViewModel.Instance.WeighViewModel.Rs232.DataForShow));
+                    //Logger.InfoFormat("Data send to: {0}", PrinterViewModel.Instance.PrinterModel.
+                                                           //UpdateFieldCode(MainViewModel.Instance.WeighViewModel.Rs232.DataForShow));
                     Logger.Info("Countdown is done. Send data to the Printer");
                     this.Close();
                 }
