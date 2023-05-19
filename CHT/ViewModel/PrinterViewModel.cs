@@ -50,26 +50,30 @@ namespace CHT.ViewModel
         }
         private async Task ConnectionEventCallbackAsync(NClientSocket.EConnectionEventClient e, object obj)
         {
+
             switch (e)
             {
                 case NClientSocket.EConnectionEventClient.RECEIVEDATA:
-                    //await Task.Factory.StartNew(() =>
-                    //{
+                    await Task.Factory.StartNew(() =>
+                    {
                         string sReceive = PrinterModel.NClientSocket.ReceiveString;
+
                         if (!string.IsNullOrEmpty(sReceive))
                         {
-
+                            //Logger.InfoFormat("Lenght data: {0}", sReceive.Length);
                             if (sReceive.Length >= Convert.ToInt32(PrinterModel.LengthCounter)
-                            && !sReceive.Contains("$") || !sReceive.Contains("!"))
+                            && !sReceive.Contains("$") && !sReceive.Contains("!"))
                             {
+                                //Logger.InfoFormat("Data Printer: {0}", sReceive);
+                                //Logger.InfoFormat("subString: {0}", sReceive.Substring(PrinterModel.StartIndex, PrinterModel.EndIndex));
                                 int i;
                                 if (!int.TryParse(sReceive.Substring(PrinterModel.StartIndex, PrinterModel.EndIndex), out i))
                                 {
-                                    Logger.InfoFormat("Data received: {0}", sReceive);
                                     return;
                                 }
-                                    
+
                                 int counter = i;
+                                //Logger.InfoFormat("Counter: {0}", counter);
                                 if (PrinterModel.CounterPrinter < counter)
                                 {
                                     try
@@ -101,8 +105,7 @@ namespace CHT.ViewModel
                             }
 
                         }
-                        await Task.Delay(20);
-                    //});
+                    });
                     break;
                 case NClientSocket.EConnectionEventClient.CLIENTCONNECTED:
                     PrinterModel.PrinterState = Commons.SysStates.EPrinterState.CONNECTED;
@@ -118,6 +121,7 @@ namespace CHT.ViewModel
                     break;
                 default:
                     break;
+
             }
         }
     }
