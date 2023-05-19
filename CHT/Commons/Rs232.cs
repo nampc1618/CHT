@@ -179,9 +179,9 @@ namespace CHT.Commons
             _rs232COM.DataReceived += new SerialDataReceivedEventHandler(_rs232COM_DataReceived);
             this.OpenCOM();
         }
-        private async void _rs232COM_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void _rs232COM_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            await this._dispatcher.BeginInvoke(new Action(async () =>
+            this._dispatcher.BeginInvoke(new Action(async () =>
             {
                 await DataReceived(sender, e);
             }));
@@ -193,8 +193,10 @@ namespace CHT.Commons
             try
             {
                 // Code
-                string data = await ReadDataCOMAsync();
-                string s = data.Substring(data.IndexOf("0"), 5);
+                RecieveData = await ReadDataCOMAsync();
+                if (RecieveData.Length < 5)
+                    return;
+                string s = RecieveData.Substring(RecieveData.IndexOf("0"), 5);
                 float f = 0.000f;
                 if (!float.TryParse(s, out f))
                 {
@@ -203,7 +205,7 @@ namespace CHT.Commons
                     return;
                 }
                 ComState = SysStates.EComState.RECEIVING_DATA;
-                if (f >= 0.000f && f <= 0.002f)
+                if (f >= 0.000f && f <= 0.003f)
                 {
                     if (WeightModel.SequenceResult.Count > 0)
                     {
@@ -244,10 +246,9 @@ namespace CHT.Commons
             }
             //});
         }
-        private Task<string> ReadDataCOMAsync()
+        private async Task<string> ReadDataCOMAsync()
         {
-            string dataReceived = _rs232COM.ReadExisting();
-            return Task.FromResult(dataReceived);
+            return await Task.FromResult(_rs232COM.ReadExisting());
         }
         public bool OpenCOM()
         {
